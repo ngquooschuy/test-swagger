@@ -21,7 +21,7 @@ var spec =
             post: {
                 tags: ["Tài sản cá nhân"],
                 summary: "Danh sách, Tìm kiếm TSCN",
-                description: "",
+                description: "<ul>lstMerStatus:<li>1-Tài sản đang báo mất chưa xử lý xong, </li><li>2-Tài sản đang báo hỏng chưa xử lý xong, </li><li>3-Tài sản đang sử dụng </br> </li>lstEntityType<li> 0-Tài sản mạng lưới, </li><li>1-Tài sản khác</li></ul>",
                 operationId: "getListMyAssets",
                 consumes: ["multipart/form-data"],
                 produces: ["application/json"],
@@ -586,6 +586,230 @@ var spec =
                         description: "Lấy dữ liệu thành công",
                         schema: {
                             $ref: "#/definitions/recordsDetailResponse"
+                        }
+                    },
+                    500: {
+                        description: "Lấy dữ liệu thất bại",
+                        schema: {
+                            $ref: "#/definitions/assetsError"
+                        }
+                    }
+                },
+                security: [
+
+                ]
+            },
+        },
+        "/createPersonalHandoverMinutes": {
+            post: {
+                tags: ["Biên bản bàn giao"],
+                summary: "Tạo mới BBBG",
+                description: "",
+                operationId: "createRecords",
+                consumes: ["body", "multipart/form-data"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        "in": "formData",
+                        "name": "merEntityId",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Id tài sản",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "minuteHandoverGiverCode",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Mã nhân viên giao",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "minuteHandoverReceiverCode",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Mã nhân viên nhận",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "mô tả",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "minuteHandoverDate",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Ngày giao",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "listMerBO",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "listMerBO",
+                    },
+                    {
+                        "in": "body",
+                        "name": "body (cho dev)",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "",
+                        "schema": {
+                            $ref: "#/definitions/recordsDetailBody"
+                        }
+                    },
+                ],
+                responses: {
+                    200: {
+                        description: "Lấy dữ liệu thành công",
+                        schema: {
+                            $ref: "#/definitions/rejectResponse"
+                        }
+                    },
+                    500: {
+                        description: "Lấy dữ liệu thất bại",
+                        schema: {
+                            $ref: "#/definitions/assetsError"
+                        }
+                    }
+                },
+                security: [
+
+                ]
+            },
+        },
+
+        "/confirmMinuteHandover": {
+            post: {
+                tags: ["Biên bản bàn giao"],
+                summary: "Phê duyệt, từ chối, huỷ BBBG",
+                description: "<b>status</b>: 1- Xác nhận || 2- Từ chối",
+                operationId: "cancelRecords",
+                consumes: ["body", "multipart/form-data"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        "in": "formData",
+                        "name": "minuteHandoverId",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Id của BBBG",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Trạng thái",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "acceptDescription",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Mô tả",
+                    },
+                    
+                    // {
+                    //     "in": "body",
+                    //     "name": "body (cho dev)",
+                    //     "required": "true",
+                    //     "schema": {
+                    //         "type": "string"
+                    //     },
+                    //     "description": "",
+                    //     "schema": {
+                    //         $ref: "#/definitions/recordsDetailBody"
+                    //     }
+                    // },
+                ],
+                responses: {
+                    200: {
+                        description: "Lấy dữ liệu thành công",
+                        schema: {
+                            $ref: "#/definitions/rejectResponse"
+                        }
+                    },
+                    500: {
+                        description: "Lấy dữ liệu thất bại",
+                        schema: {
+                            $ref: "#/definitions/assetsError"
+                        }
+                    }
+                },
+                security: [
+
+                ]
+            },
+        },
+        "/deleteHandoverMinutes/": {
+            post: {
+                tags: ["Biên bản bàn giao"],
+                summary: "Xoá BBBG",
+                description: "<b>Loại BBBG: </b> 1/ Bàn giao 2 nhân viên || 2/ Bàn giao khai thác TSML",
+                operationId: "deleteRecords",
+                consumes: ["body", "multipart/form-data"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        "in": "formData",
+                        "name": "merHandoverId",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Id của BBBG",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "required": "true",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "Loại biên bản",
+                    },
+                    // {
+                    //     "in": "body",
+                    //     "name": "body (cho dev)",
+                    //     "required": "true",
+                    //     "schema": {
+                    //         "type": "string"
+                    //     },
+                    //     "description": "",
+                    //     "schema": {
+                    //         $ref: "#/definitions/recordsDetailBody"
+                    //     }
+                    // },
+                ],
+                responses: {
+                    200: {
+                        description: "Lấy dữ liệu thành công",
+                        schema: {
+                            $ref: "#/definitions/rejectResponse"
                         }
                     },
                     500: {
