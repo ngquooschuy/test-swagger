@@ -7,7 +7,7 @@ var spec =
         version: "1.0",    // Phiên bản API
         title: "Biên bản bàn giao"
     },
-    host: "https://viettelfamily.com/vtf-mobile/mobile-apis/sappo/rest",    // Server và port deploy API
+    host: "",    // Server và port deploy API
     // basePath: "/api/v1",       // Đường dẫn tới API
     // tags: [    // Danh sách các nhóm API: admin, users, images,...
     //     {
