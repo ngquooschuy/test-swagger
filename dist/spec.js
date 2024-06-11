@@ -7,7 +7,7 @@ var spec =
         version: "1.0",    // Phiên bản API
         title: "Biên bản bàn giao"
     },
-    host: "https://rest",    // Server và port deploy API
+    host: "https://viettelfamily.com/vtf-mobile/mobile-apis/sappo/rest",    // Server và port deploy API
     // basePath: "/api/v1",       // Đường dẫn tới API
     // tags: [    // Danh sách các nhóm API: admin, users, images,...
     //     {
@@ -15,7 +15,7 @@ var spec =
     //         description: "Danh sách",    // Mô tả về nhóm API
     //     }
     // ],
-    schemes: ["http"],    // Sử dụng scheme gì? HTTP, HTTPS?
+    schemes: ["https"],    // Sử dụng scheme gì? HTTP, HTTPS?
     paths: {
         "/getListEntityByUser": {    // Đường dẫn. Kết hợp với host và basePath sẽ thành localhost:3000/api/v1/admin/
             post: {
@@ -106,12 +106,30 @@ var spec =
                 summary: "Huỷ báo mất/hỏng/không sử dụng",
                 description: "truyền đúng type đã báo, nếu type=1: báo mất, type=2: báo hỏng",
                 operationId: "CancelReports",
-                consumes: ["body"],    // Loại dữ liệu gửi đi
+                consumes: ["multipart/form-data", "body"],    // Loại dữ liệu gửi đi
                 produces: ["application/json"],       // Loại dữ liệu trả về
                 parameters: [               // Các tham số
                     {
+                        "in": "formData",
+                        "name": "merEntityId",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "Id của tài sản"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "Loại báo cáo"
+                    },
+                    {
                         "in": "body",      // Tham số được gửi lên từ form
-                        "name": "body",    // Tên tham số
+                        "name": "body (cho dev)",    // Tên tham số
                         "required": "true",    // Tham số là bắt buộc
                         "schema": {
                             "type": "string"   // Loại dữ liệu của tham số là chuỗi
@@ -147,12 +165,76 @@ var spec =
                 summary: "Báo mất/hỏng/không sử dụng",
                 description: "truyền đúng type đã báo, nếu type=1: báo mất, type=2: báo hỏng",
                 operationId: "reportsAssets",
-                consumes: ["body"],    // Loại dữ liệu gửi đi
+                consumes: ["body", "multipart/form-data"],    // Loại dữ liệu gửi đi
                 produces: ["application/json"],       // Loại dữ liệu trả về
-                parameters: [               // Các tham số
+                parameters: [
+                    {
+                        "in": "formData",
+                        "name": "dateOn",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "ngày báo hỏng/mất"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "brokenDescription",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                        },
+                        "description": "mô tả lỗi"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "count",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                        },
+                        "description": "số lượng"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "merEntityId",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                        },
+                        "description": "Id tài sản"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "qcDept",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                        },
+                        "description": "phòng/ban"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "reason",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                        },
+                        "description": "Lý do hỏng/mất"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                        },
+                        "description": "loại báo cáo"
+                    },
                     {
                         "in": "body",      // Tham số được gửi lên từ form
-                        "name": "body",    // Tên tham số
+                        "name": "body (cho dev)",    // Tên tham số
                         "required": "true",    // Tham số là bắt buộc
                         "schema": {
                             "type": "string"   // Loại dữ liệu của tham số là chuỗi
@@ -182,6 +264,47 @@ var spec =
                 ]
             }
         },
+        "/getListEntityByUser(dùng chung)": {
+            post: {
+                tags: ["Tài sản cá nhân"],
+                summary: "Bộ lọc TSCN",
+                description: "",
+                operationId: "advancedSearchRecords",
+                consumes: ["body"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "",
+                        "schema": {
+                            $ref: "#/definitions/recordsBody"
+                        }
+                    },
+                ],
+                responses: {
+                    200: {
+                        description: "Lấy dữ liệu thành công",
+                        schema: {
+                            $ref: "#/definitions/assetsList"
+                        }
+                    },
+                    500: {
+                        description: "Lấy dữ liệu thất bại",
+                        schema: {
+                            $ref: "#/definitions/assetsError"
+                        }
+                    }
+                },
+                security: [
+
+                ]
+            },
+        },
 
         "/getListHandoverByUser": {
             post: {
@@ -189,12 +312,66 @@ var spec =
                 summary: "Danh sách BBBG",
                 description: "",
                 operationId: "getListRecords",
-                consumes: ["body"],
+                consumes: ["body", "multipart/form-data"],
                 produces: ["application/json"],
                 parameters: [
                     {
+                        "in": "formData",
+                        "name": "employeeId",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Mã nhân viên",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "keyword",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "keyword",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "lstMerStatus",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Trạng thái",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "lstEntityType",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Loại tài sản",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "page",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "pageSize",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "pageSize",
+                    },
+                    {
                         "in": "body",
-                        "name": "body",
+                        "name": "body (cho dev)",
                         "required": "true",
                         "schema": {
                             "type": "string"
@@ -224,76 +401,207 @@ var spec =
                 ]
             },
         },
-        "/admin/{id}": {
+        "/getListHandoverByUser(dùngchung)": {
             post: {
-                tags: ["admin"],
-                summary: "Lấy tài khoản admin theo id",
+                tags: ["Biên bản bàn giao"],
+                summary: "Tìm kiếm BBBG",
                 description: "",
-                operationId: "getAdminAccountByID",
-                consumes: ["multipart/form-data"],
+                operationId: "searchRecords",
+                consumes: ["body", "multipart/form-data"],
                 produces: ["application/json"],
                 parameters: [
                     {
-                        "in": "path",
-                        "name": "id",
+                        "in": "formData",
+                        "name": "employeeId",
                         "required": "true",
                         "schema": {
-                            "type": "integer",
-                            "minimum": "1"
+                            "type": "string"
                         },
-                        "description": "id của tài khoản admin"
-                    }
-                ],
-                responses: {
-                    200: {                                     // Mã trả về 200
-                        description: "Lấy dữ liệu thành công",    // Mô tả kết quả trả về
-                        schema: {
-                            $ref: "#/definitions/admin"           // Dữ liệu trả về là đói tượng admin (tham chiếu với phần definitions ở cuối)
+                        "description": "Mã nhân viên",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "keyword",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "keyword",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Trạng thái",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Loại tài sản",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "fromDate",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Từ ngày",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "toDate",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Đến ngày",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "isConfirm",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Đã xác nhận",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "page",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "pageSize",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "pageSize",
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "",
+                        "schema": {
+                            $ref: "#/definitions/recordsSearchBody"
                         }
                     },
+                ],
+                responses: {
+                    200: {
+                        description: "Lấy dữ liệu thành công",
+                        schema: {
+                            $ref: "#/definitions/recordsResponse"
+                        }
+                    },
+                    500: {
+                        description: "Lấy dữ liệu thất bại",
+                        schema: {
+                            $ref: "#/definitions/assetsError"
+                        }
+                    }
                 },
                 security: [
 
                 ]
             },
-            put: {
-                tags: ["admin"],
-                summary: "Đổi mật khẩu tài khoản admin theo id",
+        },
+        "/getDetailHandover": {
+            post: {
+                tags: ["Biên bản bàn giao"],
+                summary: "Xem chi tiết BBBG",
                 description: "",
-                operationId: "changePasswordAdminAccountByID",
-                consumes: ["multipart/form-data"],
+                operationId: "detailsRecords",
+                consumes: ["body", "multipart/form-data"],
                 produces: ["application/json"],
                 parameters: [
                     {
-                        "in": "path",
-                        "name": "id",
-                        "required": "true",
-                        "schema": {
-                            "type": "integer",    // Kiểu tham số là số nguyên
-                            "minimum": "1"        // Giá trị thấp nhất là 1
-                        },
-                        "description": "id của tài khoản admin"
-                    },
-                    {
                         "in": "formData",
-                        "name": "password",
+                        "name": "minuteHandOverId",
                         "required": "true",
                         "schema": {
                             "type": "string"
                         },
-                        "description": "password mới của tài khoản admin"
-                    }
+                        "description": "Mã BBBG",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Loại BBBG",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "page",
+                    },
+                    {
+                        "in": "formData",
+                        "name": "pageSize",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "pageSize",
+                    },
+                    {
+                        "in": "body",
+                        "name": "body (cho dev)",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "",
+                        "schema": {
+                            $ref: "#/definitions/recordsDetailBody"
+                        }
+                    },
                 ],
                 responses: {
                     200: {
-                        description: "đổi mật khẩu thành công"
+                        description: "Lấy dữ liệu thành công",
+                        schema: {
+                            $ref: "#/definitions/recordsDetailResponse"
+                        }
                     },
+                    500: {
+                        description: "Lấy dữ liệu thất bại",
+                        schema: {
+                            $ref: "#/definitions/assetsError"
+                        }
+                    }
                 },
                 security: [
 
                 ]
-            }
-        }
+            },
+        },
+
+
     },
     securityDefinitions: {    // Thông tin về api key sử dụng để thực hiện request
         api_key: {
@@ -446,7 +754,8 @@ var spec =
             type: "object",
             properties: {
                 dateOn: {
-                    type: "string"
+                    "type": "string",
+                    "format": "date-time"
                 },
                 lstMerEntity: {
                     type: "array",
@@ -571,7 +880,126 @@ var spec =
                 }
 
             }
-
+        },
+        recordsSearchBody: {
+            type: "object",
+            properties: {
+                "employeeId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "number"
+                },
+                "page": {
+                    "type": "number"
+                },
+                "pageSize": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "number"
+                },
+                "keyword": {
+                    "type": "string"
+                },
+                "fromDate": {
+                    "type": "string",
+                    "pattern": "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/(19|20)\\d\\d$"
+                },
+                "toDate": {
+                    "type": "string",
+                    "pattern": "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/(19|20)\\d\\d$"
+                },
+                "isConfirm": {
+                    "type": "number"
+                }
+            }
+        },
+        recordsDetailBody: {
+            type: 'object',
+            properties: {
+                minuteHandOverId: {
+                    type: "string"
+                },
+                type: {
+                    type: "number"
+                },
+                page: {
+                    type: "number"
+                },
+                pageSize: {
+                    type: "number"
+                }
+            }
+        },
+        recordsDetailResponse: {
+            "type": "object",
+            "properties": {
+                "msgCode": {
+                    "type": "number"
+                },
+                "msg": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "start": {
+                            "type": "number"
+                        },
+                        "size": {
+                            "type": "number"
+                        },
+                        "total": {
+                            "type": "number"
+                        },
+                        "lstMerEntityId": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "MER_ENTITY_ID": {
+                                        "type": "string"
+                                    },
+                                    "statusId": {
+                                        "type": "string"
+                                    },
+                                    "catMerchandiseName": {
+                                        "type": "string"
+                                    },
+                                    "count": {
+                                        "type": "string"
+                                    },
+                                    "serialNumber": {
+                                        "type": "string"
+                                    },
+                                    "companyName": {
+                                        "type": "string"
+                                    },
+                                    "statusName": {
+                                        "type": "string"
+                                    },
+                                    "usedDate": {
+                                        "type": "string"
+                                    },
+                                    "lifeTime": {
+                                        "type": "string"
+                                    },
+                                    "assetPrice": {
+                                        "type": "number"
+                                    },
+                                    "remainValue": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
         }
     }
 };
