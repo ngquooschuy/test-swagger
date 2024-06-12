@@ -695,6 +695,44 @@ var spec =
                 ]
             },
         },
+        "/getQCDepartment": {    // Đường dẫn. Kết hợp với host và basePath sẽ thành localhost:3000/api/v1/admin/
+            post: {
+                tags: ["Tài sản cá nhân"],
+                summary: "Danh sách, Tìm kiếm phòng/ban",
+                description: "",
+                operationId: "getListDept",
+                consumes: ["multipart/form-data"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        "in": "formData",
+                        "name": "assetDeptCodeOrName",
+                        "required": "false",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Mã hoặc tên phòng ban"
+                    },
+                ],
+                responses: {
+                    200: {
+                        description: "Lấy dữ liệu thành công",
+                        schema: {
+                            $ref: "#/definitions/deptResponse"
+                        }
+                    },
+                    500: {
+                        description: "Lấy dữ liệu thất bại",
+                        schema: {
+                            $ref: "#/definitions/assetsError"
+                        }
+                    }
+                },
+                security: [
+
+                ]
+            }
+        },
 
         "/confirmMinuteHandover": {
             post: {
@@ -1222,6 +1260,17 @@ var spec =
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        deptResponse: {
+            type: "object",
+            properties: {
+                assetDeptCode: {
+                    type: "string"
+                },
+                assetDeptName: {
+                    type: "string"
                 }
             }
         }
