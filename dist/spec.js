@@ -770,7 +770,7 @@ var spec =
                         },
                         "description": "Mô tả",
                     },
-                    
+
                     // {
                     //     "in": "body",
                     //     "name": "body (cho dev)",
@@ -848,6 +848,56 @@ var spec =
                         description: "Lấy dữ liệu thành công",
                         schema: {
                             $ref: "#/definitions/rejectResponse"
+                        }
+                    },
+                    500: {
+                        description: "Lấy dữ liệu thất bại",
+                        schema: {
+                            $ref: "#/definitions/assetsError"
+                        }
+                    }
+                },
+                security: [
+
+                ]
+            },
+        },
+        "https://viettelfamily.com/vtf-mobile/mobile-apis/vtf-backend/api/v1/employee/search?keyword=": {
+            get: {
+                tags: ["Danh sách, tìm kiếm nhân viên"],
+                summary: "danh sách, tìm kiếm",
+                description: "",
+                operationId: "getEmployee",
+                consumes: ["params", "multipart/form-data"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        "in": "params",
+                        "name": "keyword",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Id của BBBG",
+                    },
+                    // {
+                    //     "in": "body",
+                    //     "name": "body (cho dev)",
+                    //     "required": "true",
+                    //     "schema": {
+                    //         "type": "string"
+                    //     },
+                    //     "description": "",
+                    //     "schema": {
+                    //         $ref: "#/definitions/recordsDetailBody"
+                    //     }
+                    // },
+                ],
+                responses: {
+                    200: {
+                        description: "Lấy dữ liệu thành công",
+                        schema: {
+                            $ref: "#/definitions/employeeResponse"
                         }
                     },
                     500: {
@@ -1271,6 +1321,186 @@ var spec =
                 },
                 assetDeptName: {
                     type: "string"
+                }
+            }
+        },
+        employeeResponse: {
+            type: "object",
+            properties: {
+                listMember: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            "employeeId": { "type": "number" },
+                            "forceUpdateAppGroups": { "type": "string" },
+                            "provinceOfBirthId": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "provinceOfOriginId": { "type": "number" },
+                            "ethnicId": { "type": "number" },
+                            "religionId": { "type": "number" },
+                            "organizationId": { "type": "number" },
+                            "invalidedSoldierLevelId": { "type": "number" },
+                            "sickSoldierLevelId": { "type": "number" },
+                            "cultureLevelId": { "type": "number" },
+                            "isActive": { "type": "boolean" },
+                            "createdTime": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "modifiedTime": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "createdBy": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "modifiedBy": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "empTypeId": { "type": "number" },
+                            "positionId": { "type": "number" },
+                            "soldierLevelId": { "type": "number" },
+                            "status": { "type": "number" },
+                            "otherOrgId": { "type": "number" },
+                            "insuranceNumber": { "type": "number" },
+                            "educationGradeId": { "type": "number" },
+                            "educationSubjectId": { "type": "number" },
+                            "educationTypeId": { "type": "number" },
+                            "graduatedRankId": { "type": "number" },
+                            "yearOfIssue": { "type": "string" },
+                            "placeOfIssueId": { "type": "number" },
+                            "taxNumberUpdatedTime": { "type": "number" },
+                            "oldId": { "type": "number" },
+                            "viettelStartDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "recruitTypeId": { "type": "number" },
+                            "taxCodeDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "taxManageOrgId": { "type": "number" },
+                            "taxManageOrg": { "type": "string" },
+                            "isPolicy": { "type": "boolean" },
+                            "referencePeople": { "type": "string" },
+                            "referenceRank": { "type": "string" },
+                            "referenceDepartment": { "type": "string" },
+                            "referenceRelationship": { "type": "string" },
+                            "seniorMilestone": { "type": "string" },
+                            "workingAbroadMonth": { "type": "number" },
+                            "injuryPercent": { "type": "number" },
+                            "injuryDecideNumber": { "type": "number" },
+                            "policyType": { "type": "number" },
+                            "policyYear": { "type": "number" },
+                            "policyLevelId": { "type": "number" },
+                            "policyPlace": { "type": "string" },
+                            "saleCode": { "type": "number" },
+                            "saleAddress": { "type": "string" },
+                            "saleStatus": { "type": "number" },
+                            "smartSim": { "type": "number" },
+                            "saleSerial": { "type": "number" },
+                            "channelType": { "type": "number" },
+                            "channelName": { "type": "string" },
+                            "channelCode": { "type": "number" },
+                            "saleModifiedTime": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "collectCallCode": { "type": "number" },
+                            "collectCallAddress": { "type": "string" },
+                            "collectCallStatus": { "type": "number" },
+                            "smei": { "type": "number" },
+                            "collectCallModifiedTime": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "managementCommand": { "type": "string" },
+                            "politicalTheorist": { "type": "string" },
+                            "technicalExpertiseProfession": { "type": "string" },
+                            "degreeId": { "type": "number" },
+                            "wentAbroad": { "type": "number" },
+                            "demobilizationDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "reasonOfDemobilization": { "type": "string" },
+                            "taxNumber": { "type": "number" },
+                            "childGrade": { "type": "number" },
+                            "otherInfo": { "type": "string" },
+                            "nationId": { "type": "number" },
+                            "familyTypeId": { "type": "string" },
+                            "politicalFamilyTypeId": { "type": "number" },
+                            "permanentProvinceId": { "type": "number" },
+                            "currentProvinceId": { "type": "number" },
+                            "employeeCode": { "type": "string" },
+                            "email": { "type": "string" },
+                            "aliasName": { "type": "string" },
+                            "lastName": { "type": "string" },
+                            "firstName": { "type": "string" },
+                            "middleName": { "type": "string" },
+                            "fullName": { "type": "string" },
+                            "imagePath": { "type": "string" },
+                            "dateOfBirth": { "type": "number" },
+                            "placeOfBirth": { "type": "string" },
+                            "gender": { "type": "number" },
+                            "origin": { "type": "number" },
+                            "maritalStatus": { "type": "number" },
+                            "personalIdNumber": { "type": "number" },
+                            "personalIdIssuedDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "personalIdIssuedPlace": { "type": "string" },
+                            "passportIssueDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "passportNumber": { "type": "number" },
+                            "permanentAddress": { "type": "string" },
+                            "currentAddress": { "type": "string" },
+                            "phoneNumber": { "type": "string" },
+                            "mobileNumber": { "type": "string" },
+                            "mobileNumber2": { "type": "string" },
+                            "mobileNumber3": { "type": "string" },
+                            "fax": { "type": "string" },
+                            "partyNumber": { "type": "number" },
+                            "partyAdmissionDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "partyOfficialAdmissionDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "partyAdmissionPlace": { "type": "string" },
+                            "unionNumber": { "type": "number" },
+                            "unionAdmissionDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "unionAdmissionPlace": { "type": "string" },
+                            "soldierNumber": { "type": "number" },
+                            "enlistedDate": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "isInvalidedSoldier": { "type": "boolean" },
+                            "isSickSoldier": { "type": "boolean" },
+                            "positionName": { "type": "string" },
+                            "organizationName": { "type": "string" },
+                            "birthYear": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "versionInfos": { "type": "number" }
+                        }
+                    }
                 }
             }
         }
