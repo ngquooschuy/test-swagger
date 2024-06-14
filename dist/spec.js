@@ -103,7 +103,7 @@ var spec =
         "/rejectAssetManager": {
             post: {
                 tags: ["Tài sản cá nhân"],
-                summary: "Huỷ báo mất/hỏng/không sử dụng",
+                summary: "Huỷ báo mất/hỏng",
                 description: "truyền đúng type đã báo, nếu type=1: báo mất, type=2: báo hỏng",
                 operationId: "CancelReports",
                 consumes: ["multipart/form-data", "body"],    // Loại dữ liệu gửi đi
@@ -162,7 +162,7 @@ var spec =
         "/updateStatusEntity": {
             post: {
                 tags: ["Tài sản cá nhân"],
-                summary: "Báo mất/hỏng/không sử dụng",
+                summary: "Báo mất/hỏng",
                 description: "truyền đúng type đã báo, nếu type=1: báo mất, type=2: báo hỏng",
                 operationId: "reportsAssets",
                 consumes: ["body", "multipart/form-data"],    // Loại dữ liệu gửi đi
@@ -878,7 +878,7 @@ var spec =
                         "schema": {
                             "type": "string"
                         },
-                        "description": "Id của BBBG",
+                        "description": "Tìm kiếm theo tên, mã",
                     },
                     // {
                     //     "in": "body",
